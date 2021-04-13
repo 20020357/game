@@ -1,84 +1,75 @@
-#include <iostream>
-#include <vector>
-#include <cstdio>
+#include <bits/stdc++.h>
 using namespace std;
 
-void input (vector <vector <char> > arr);
-void output (vector <vector <char> > arr);
-int countBomb (vector <vector <char> > arr, int i, int j);
+void input (char x[][5], int m, int n);
+bool bomb (char x);
+int countBomb (char s[][5], int a, int b);
+void output (char x[][5], int m, int n);
 
 int main()
 {
-    const int size = 5;
-    vector <vector <char> > screen(size);
-    input(screen);
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-            if (screen[i][j] == '.') screen[i][j] = countBomb(screen, i, j);
-    }
-    output(screen);
+    const int m = 3, n = 5;
+    char s[m][n];
+    input (s, m, n);
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            if (bomb(s[i][j]) ==  false) s[i][j] = countBomb(s, i, j);
+    output (s, m, n);
     return 0;
 }
 
-void input (vector <vector <char> > arr)
+void input (char s[][5], int m, int n)
 {
-    cerr << "input...\n";
-    for (int i = 0; i < arr.size(); i++)
-        for (int j = 0; j < arr.size(); j++)
-        {
-            char temp;
-            cin >> temp;
-            arr[i].push_back(temp);
-        }
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) cin >> s[i][j];
 }
-int countBomb (vector <vector <char> > arr, int a, int b)
+bool bomb (char x)
 {
-    cerr << "count\n";
+    if (x == '*') return true;
+    return false;
+}
+int countBomb (char s[][5], int a, int b)
+{
     int count = 0;
     if (a == 0)
-        {
-            for (int i = a; i <= a+1; i++)
-                if ( b == 0)
-                    {
-                        for (int j = b; j <= b+1; j++)
-                            if (arr[i][j] == '*') count++;
-                    }
-                else {
-                    for (int j = b-1; j <= b+1; j++)
-                        if (arr[i][j] == '*') count++;
-                }
-        }
-    else {
-        for (int i = a-1; i <= a+1; i++)
-            if ( b == 0)
+    {
+        for (int i = a; i <= a+1; i++)
+            if (b == 0)
                 {
                     for (int j = b; j <= b+1; j++)
-                        if (arr[i][j] == '*') count++;
+                        if (bomb(s[i][j]) == true) count++;
                 }
             else {
                 for (int j = b-1; j <= b+1; j++)
-                    if (arr[i][j] == '*') count++;
+                    if (bomb(s[i][j]) == true) count++;
+            }
+    }
+    else {
+        for (int i = a-1; i <= a+1; i++)
+            if (b == 0)
+                {
+                    for (int j = b; j <= b+1; j++)
+                        if (bomb(s[i][j]) == true) count++;
+                }
+            else {
+                for (int j = b-1; j <= b+1; j++)
+                    if (bomb(s[i][j]) == true) count++;
             }
     }
     return count;
 }
-void output (vector <vector <char> > arr)
+void output (char s[][5], int m, int n)
 {
-    cerr << "output";
-    for (int i = 0; i < arr.size(); i++)
-    {
-        for (int j = 0; j < arr.size(); j++)
-            cout << arr[i][j] << " ";
-        cout << endl;
-    }
+    for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+                if (s[i][j] != '*') cout << (int) s[i][j] << " ";
+                    else cout << s[i][j] << " ";
+            cout << endl;
+        }
 }
-/* 
-
-***..
-.*..*
-.....
-*...*
-..*.. 
-
+/*
+* * . . .
+. . . . .
+. * . . .
 */
