@@ -52,23 +52,14 @@ void Map (Minesweeper test)
 }
 void refreshScreen (SDL_Window* window, SDL_Renderer* renderer, const SDL_Rect& filled_rect, const bool leftMouse, Minesweeper test)
 {
-/*
+    bool aLive = true;
     SDL_Surface* surface = IMG_Load("Minesweeper.bmp");
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_Rect picture;
-    picture.x = (test.data[filled_rect.x/50][filled_rect.y/50])*32;
-    picture.y = 0; picture.h = 32; picture.w = 32;
-
-    SDL_Rect screen;
-    screen.x = (filled_rect.x/50)*50;
-    screen.y = (filled_rect.y/50)*50;
-    screen.h = 50; screen.w = 50;
-
-    SDL_RenderCopy(renderer, texture, &picture, &screen);
-    SDL_RenderPresent(renderer);
-*/
-    bool aLive = true;
-    test.open(filled_rect.x/50, filled_rect.y/50, aLive);
+    //while (aLive == true)
+    {
+        SDL_Rect picture, screen;
+        test.open(filled_rect.x/50, filled_rect.y/50, aLive, renderer, texture, picture, screen);
+    }
 }
 

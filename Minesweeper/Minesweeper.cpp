@@ -1,5 +1,4 @@
 #include "Minesweeper.h"
-#include "Map.h"
 
 void Minesweeper:: creating_map ()
 {
@@ -42,65 +41,47 @@ void Minesweeper:: processing_bomb ()
 						for (int b = j-1; b <= j+1; b++)
 							if (0 <= b && b < width && data[a][b] == BOMB) data[i][j]++;
 }
-void Minesweeper:: open (int x, int y, bool& aLive)
+void Minesweeper:: open (int x, int y, bool& aLive, SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& picture, SDL_Rect& screen)
 {
 	if (data[x][y] == BOMB)
 	{
-		SDL_Window* window = SDL_CreateWindow("Minesweeper", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		SDL_Surface* surface = IMG_Load("Minesweeper.bmg");
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-		SDL_Rect picture;
-		picture.x = (data[x][y])*32; picture.y = 0; picture.h = 32; picture.w = 32;
-		SDL_Rect screen;
-        screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
-        SDL_RenderCopy(renderer, texture, &picture, &screen);
-        SDL_RenderPresent(renderer);
-		//aLive = false;
+		display[x][y] = 'X';
+		picture.x = data[x][y]*32; picture.y = 0; picture.h = 32; picture.w = 32;
+		screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
+		print(renderer, texture, picture, screen);
+		aLive = false;
 	}
-	else extend (x, y);
+	else extend (x, y, renderer, texture, picture, screen);
 }
-void Minesweeper:: extend (int x, int y)
+void Minesweeper:: extend (int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& picture, SDL_Rect& screen)
 {
 	if (data[x][y] != 0)
 	{
-		SDL_Window* window = SDL_CreateWindow("Minesweeper", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		SDL_Surface* surface = IMG_Load("Minesweeper.bmg");
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-		SDL_Rect picture;
-		picture.x = (data[x][y])*32; picture.y = 0; picture.h = 32; picture.w = 32;
-		SDL_Rect screen;
-        screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
-        SDL_RenderCopy(renderer, texture, &picture, &screen);
-        SDL_RenderPresent(renderer);
+		display[x][y] = data[x][y] + 48;
+
+		picture.x = data[x][y]*32; picture.y = 0; picture.h = 32; picture.w = 32;
+		screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
+		print(renderer, texture, picture, screen);
+
 		return;
 	}
 	else
 	{
-		SDL_Window* window = SDL_CreateWindow("Minesweeper", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		SDL_Surface* surface = IMG_Load("Minesweeper.bmg");
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-		SDL_Rect picture;
-		picture.x = (data[x][y])*32; picture.y = 0; picture.h = 32; picture.w = 32;
-		SDL_Rect screen;
-        screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
-        SDL_RenderCopy(renderer, texture, &picture, &screen);
-        SDL_RenderPresent(renderer);
+		display[x][y] = ' ';
+
+		picture.x = data[x][y]*32; picture.y = 0; picture.h = 32; picture.w = 32;
+		screen.x = x*50; screen.y = y*50; screen.h = 50; screen.w = 50;
+		print(renderer, texture, picture, screen);
 		for (int i = -1; i < 2; i++)
 			if (i != 0 && 0 <= x+i && x+i < length)
 				for (int j = -1; j < 2; j++)
 					if (j != 0 && 0 <= j+y && j+y < width)
-						if (picture.x == 320) extend(x+i, y+j);
+						if (display[x+i][y+j] == '*') extend(x+i, y+j, renderer, texture, picture, screen);
+
 	}
 }
-void Minesweeper:: print ()
+void Minesweeper:: print (SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& picture, SDL_Rect& screen)
 {
-	for (int i = 0; i < length; i++)
-	{
-		for (int j = 0; j < width; j++)
-			cout << display[i][j] << " ";
-		cout << endl;
-	}
+	SDL_RenderCopy(renderer, texture, &picture, &screen);
+    SDL_RenderPresent(renderer);
 }

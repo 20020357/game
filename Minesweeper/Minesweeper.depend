@@ -19,18 +19,18 @@
 	"begin_code.h"
 	"close_code.h"
 
-1618303172 source:e:\code blocks\minesweeper\minesweeper.cpp
+1618649390 source:e:\code blocks\minesweeper\minesweeper.cpp
 	"Minesweeper.h"
-	"Map.h"
 
-1618151442 e:\code blocks\minesweeper\minesweeper.h
+1618649244 e:\code blocks\minesweeper\minesweeper.h
 	<bits/stdc++.h>
-	<windows.h>
+	<SDL.h>
+	<SDL.h>
 
-1618303447 source:e:\code blocks\minesweeper\map.cpp
+1618647685 source:e:\code blocks\minesweeper\map.cpp
 	"Map.h"
 
-1618288084 e:\code blocks\minesweeper\map.h
+1618629086 e:\code blocks\minesweeper\map.h
 	"Minesweeper.h"
 	<SDL.h>
 	<SDL_image.h>
